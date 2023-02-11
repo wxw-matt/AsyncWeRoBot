@@ -572,7 +572,7 @@ class BaseRoBot(object):
             message_dict = parse_xml(xml)
         return process_message(message_dict)
 
-    def get_reply(self, message):
+    async def get_reply(self, message):
         """
         根据 message 的内容获取 Reply 对象。
 
@@ -591,7 +591,7 @@ class BaseRoBot(object):
         try:
             for handler, args_count in handlers:
                 args = [message, session][:args_count]
-                reply = handler(*args)
+                reply = await handler(*args)
                 if session_storage and id:
                     session_storage[id] = session
                 if reply:
@@ -599,7 +599,7 @@ class BaseRoBot(object):
         except:
             self.logger.exception("Catch an exception")
 
-    def get_encrypted_reply(self, message):
+    async def get_encrypted_reply(self, message):
         """
         对一个指定的 WeRoBot Message ，获取 handlers 处理后得到的 Reply。
         如果可能，对该 Reply 进行加密。
@@ -608,7 +608,7 @@ class BaseRoBot(object):
         :param message: 一个 WeRoBot Message 实例。
         :return: reply （纯文本）
         """
-        reply = self.get_reply(message)
+        reply = await self.get_reply(message)
         if not reply:
             self.logger.warning("No handler responded message %s" % message)
             return ''

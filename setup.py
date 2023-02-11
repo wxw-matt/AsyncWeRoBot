@@ -31,14 +31,14 @@ readme = readme.replace("latest", "v" + werobot.__version__)
 
 install_requires = open("requirements.txt").readlines()
 setup(
-    name='WeRoBot',
+    name='AsyncWeRoBot',
     version=werobot.__version__,
     author=werobot.__author__,
-    author_email='whtsky@me.com',
-    url='https://github.com/offu/WeRoBot',
+    author_email='matt.wxw.adelaide@gmail.com',
+    url='https://github.com/wxw-matt/AsyncWeRoBot.git',
     packages=find_packages(),
-    keywords="wechat weixin werobot",
-    description='WeRoBot: writing WeChat Offical Account Robots with fun',
+    keywords="wechat weixin werobot async werobot",
+    description='AsyncWeRoBot: An asynchronous high performance framework for WeChat Offical Account backend development. Adapted from WeRoBot.',
     long_description=readme,
     install_requires=install_requires,
     include_package_data=True,

@@ -14,18 +14,23 @@ def make_handler(robot):
         import tornado.ioloop
         import tornado.web
         from werobot import WeRoBot
-        from tornado_werobot import make_handler
+        from werobot.contrib.tornado import make_handler
 
         robot = WeRoBot(token='token')
 
 
-        @robot.handler
-        def hello(message):
+        @robot.text
+        async def hello(message):
             return 'Hello World!'
 
-        application = tornado.web.Application([
+        app = tornado.web.Application([
             (r"/", make_handler(robot)),
         ])
+
+        if __name__ == "__main__":
+            app.listen(8090)
+            tornado.ioloop.IOLoop.current().start()
+
 
     :param robot: 一个 BaseRoBot 实例。
     :return: 一个标准的 Tornado Handler
@@ -54,7 +59,7 @@ def make_handler(robot):
             echostr = self.get_argument('echostr', '')
             self.write(echostr)
 
-        def post(self):
+        async def post(self):
             timestamp = self.get_argument('timestamp', '')
             nonce = self.get_argument('nonce', '')
             msg_signature = self.get_argument('msg_signature', '')
@@ -65,6 +70,6 @@ def make_handler(robot):
                 msg_signature=msg_signature
             )
             self.set_header("Content-Type", "application/xml;charset=utf-8")
-            self.write(robot.get_encrypted_reply(message))
+            self.write(await robot.get_encrypted_reply(message))
 
     return WeRoBotHandler
